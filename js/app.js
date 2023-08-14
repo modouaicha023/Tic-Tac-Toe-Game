@@ -87,7 +87,7 @@ const App = {
                 const turnIcon = document.createElement("i");
                 const turnLabel = document.createElement('p');
                 turnLabel.innerText = `Player ${nextPlayer}, you are up`;
-                
+
                 if (currentPlayer === 1) {
                     squareIcon.classList.add('fa-solid', 'fa-x', 'yellow');
                     turnIcon.classList.add('fa-solid', 'fa-o', 'turquoise');
@@ -129,5 +129,25 @@ const App = {
         });
     },
 
-};// this App is an object with a property called init which is a function to permit to execute the code inside the function, the utility is to avoid to execute the code inside the function when the page is loaded
-window.addEventListener("load", App.init); //this instruction is to execute the function init when the page is loaded
+};
+// this App is an object with a property called init which is a function to permit to execute the code inside the function, the utility is to avoid to execute the code inside the function when the page is loaded
+// window.addEventListener("load", App.init); //this instruction is to execute the function init when the page is loaded
+
+import View from "./view.js"
+
+function init() {
+    const view = new View();
+    view.bindGameResetEvent(event => {
+        console.log(' Reset event');
+        console.log(event);
+    });
+    view.bindNewRoundEvent(event => {
+        console.log('New  Round event');
+        console.log(event);
+    });
+    view.bindPlayerMoveEvent(event => {
+        console.log(' Player Move event');
+        console.log(event);
+    });
+ }
+window.addEventListener("load", init()); 
