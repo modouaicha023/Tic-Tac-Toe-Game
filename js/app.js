@@ -156,16 +156,21 @@ function init() {
 
 
     view.bindGameResetEvent(event => {
-        view.closeModal();
+        view.closeAll();
         store.reset();
 
         view.clearMoves();
         view.setTurnIndicator(store.game.currentPlayer);
+        view.updateScoreBoar(store.stats.playerWithStats[0].wins, store.stats.playerWithStats[1].wins, store.stats.ties)
     });
 
     view.bindNewRoundEvent(event => {
-        console.log('New  Round event');
-        console.log(event);
+        store.newRound();
+
+        view.closeAll();
+        view.clearMoves();
+        view.setTurnIndicator(store.game.currentPlayer);
+        view.updateScoreBoar(store.stats.playerWithStats[0].wins, store.stats.playerWithStats[1].wins, store.stats.ties)
     });
 
     view.bindPlayerMoveEvent((square) => {
