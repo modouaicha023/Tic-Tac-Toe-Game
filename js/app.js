@@ -19,30 +19,25 @@ function init() {
     const view = new View();
     const store = new Store("live-t3-storage-key", players);
 
+    store.addEventListener('statechange', () => {
+        view.render(store.game, store.stats);
+    });
 
-    function initView() {
-        view.closeAll();
-        view.clearMoves();
-        view.setTurnIndicator(store.game.currentPlayer);
-        view.updateScoreBoar(store.stats.playerWithStats[0].wins, store.stats.playerWithStats[1].wins, store.stats.ties)
-        view.initalizeMove(store.game.moves);
-
-    }
     window.addEventListener('storage', () => {
         console.log('State changed from another tab');
-        initView();
-    })
+        view.render(store.game, store.stats);
+    });
 
 
-    initView();
+    view.render(store.game, store.stats);
+
+
     view.bindGameResetEvent(event => {
         store.reset();
-        initView();
     });
 
     view.bindNewRoundEvent(event => {
         store.newRound();
-        initView();
     });
 
     view.bindPlayerMoveEvent((square) => {
@@ -50,18 +45,7 @@ function init() {
         if (existingMove) {
             return;
         }
-
-        view.handlePlayerMove(square, store.game.currentPlayer);
-
         store.playerMove(+square.id);
-        if (store.game.status.isComplete) {
-
-            view.openModal(store.game.status.winner ? `${store.game.status.winner.name} wins` : 'Tie');
-        }
-
-        view.setTurnIndicator(store.game.currentPlayer);
-
-
     });
 }
 window.addEventListener("load", init()); 
